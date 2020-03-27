@@ -4,18 +4,13 @@ const crypto = require('crypto')
 const db = require('../database/connection')
 
 routes.post('/login', async (req, res) => {
-    const id = req.body
-    const user = await db('ongs').select('*').where({id})
-
+    const {id}  = req.body
+    const user = await db('ongs').where('id',id).select('name').first()
     if (!user) return res.status(404).send({ error: 'Not ONG ID' })
 
-    res.send(user)
+   return res.json( user )
 })
 
-routes.get('/aa', async (req, res) => {
-    const ongs = await db('ongs').select('*')
-    return res.send({ ongs })
-})
 
 routes.post('/register', async (req, res) => {
     const { name, email, whatsapp, city, uf } = req.body
